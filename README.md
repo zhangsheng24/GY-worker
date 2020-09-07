@@ -37,3 +37,5 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 会发现其实之前是有一个gitlab的凭据的，现在又多了一个github的凭据
 
 ### 安装依赖包
+正常：npm i xxx
+特殊：vue add vuex    vue add router
