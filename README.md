@@ -35,3 +35,5 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 最终我们的代码都提交到了远程仓库去了。
 这个时候我们查看凭据管理器  路径：控制面板\用户帐户和家庭安全\凭据管理器
 会发现其实之前是有一个gitlab的凭据的，现在又多了一个github的凭据
+
+### 安装依赖包
