@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build:dev": "vue-cli-service build --mode development",
+    "build:test": "vue-cli-service build --mode test",
+    "build:prod": "vue-cli-service build --mode production",
+    "analyz": "vue-cli-service build --mode analyz"
   },
   "dependencies": {
     "amfe-flexible": "^2.2.1",
@@ -32,6 +34,7 @@
     "sass": "^1.26.10",
     "sass-loader": "^10.0.2",
     "terser-webpack-plugin": "^4.1.0",
+    "vue-cli-plugin-webpack-bundle-analyzer": "^2.0.0",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
