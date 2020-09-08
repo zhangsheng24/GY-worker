@@ -46,4 +46,74 @@ module.exports={
     //也就是说map文件相当于是查看源码的一个东西，如果不需要定位问题，并且不想被看到源码，就设置成false,
     //既可以减少包的大小，还可以加密源码。
     productionSourceMap:buildcfg.sourcemapUpload,
+    chainWebpack:(config)=>{
+        //~0=-1,~-1=0,也就是加一再变成负号
+        if(~['analyz','production'].indexOf(buildcfg.env) && buildcfg.cdnFlag){
+            config.externals(buildcfg.externals)//用于排除一些引入的模块，不进行打包，引用外部的模块。
+        }
+        config.plugin('html').tap(args=>{//配置插件: 修改参数
+            args[0].title=buildcfg.title//设置html的title，但是我们在进行路由切换得时候会通过路由钩子函数动态修改title
+            if(buildcfg.cdnFlag){//在开启cdn加载的情况下，如果是生产环境就加载prod的cdn。否则...
+                if(~['analyz','production'].indexOf(buildcfg.env)){
+                    args[0].cdn=cdn.prod
+                }else{
+                    args[0].cdn=cdn.dev
+                }
+            }
+            return args
+        })
+    },
+    configureWebpack:(config)=>{
+        if(~['analyz','production'].indexOf(buildcfg.env)){
+            config.mode='production'
+            buildcfg.closeConsole && config.plugins.push(
+                new TerserPlugin({
+                    terserOptions:{
+                        warnings:false,
+                        compress:{
+                            drop_console:true,//true就是干掉所有的console.*这些函数的调用
+                            drop_debugger:false,//干掉那些debugger
+                            pure_funcs:['console.log']// 如果你要干掉特定的函数比如console.info ，又想删掉后保留其参数中的副作用，那用pure_funcs来处理
+                        }
+                    }
+                })
+            )
+            buildcfg.productionGzip && config.plugins.push(
+                new CompressionWebpackPlugin({
+                    test:new RegExp('\\.('+buildcfg.productionGzipExtensions.join('|')+')$'),
+                    threshold:8192,
+                    minRatio:0.8
+                })
+            )
+        }else{
+            config.mode='development'
+        }
+    },
+    css:{
+        loaderOptions:{//向 scss相关的 loader 传递选项，用于全局使用
+            scss:{
+                additionalData:`@import "~@/commons/css/var.scss";`
+            }
+        }
+    },
+    devServer:{//开发服务器
+        open:false,
+        port:buildcfg.port,
+        disableHostCheck:true,//当将此项配置设置为 true 时，将会跳过 host 检查. 这是不推荐的 因为不检查host的应用容易受到DNS重新绑定攻击。
+        // proxy:{
+        //     '/api':{
+        //         target:'',
+        //         ws:true,
+        //         pathRewrite:{
+        //             '^/api':'/'
+        //         }
+        //     }
+        // }
+    },
+    pluginOptions:{
+        webpackBundleAnalyzer:{
+            openAnalyzer:buildcfg.env === 'analyz',
+            analyzerMode:buildcfg.env === 'analyz'?'server':'disabled'
+        }
+    }
 }
