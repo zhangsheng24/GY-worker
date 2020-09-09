@@ -1,0 +1,144 @@
+@mixin line-num($num) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $num;
+  -webkit-box-orient: vertical;
+}
+
+@mixin border-1px($color, $dir, $borderRadius: 0, $type: solid) {
+  @if $dir == all {
+    border: 1px $type $color;
+    border-radius: $borderRadius;
+  } @else if $dir == top {
+    border-top: 1px $type $color;
+  } @else if $dir == right {
+    border-right: 1px $type $color;
+  } @else if $dir == bottom {
+    border-bottom: 1px $type $color;
+  } @else if $dir == left {
+    border-left: 1px $type $color;
+  } @else if $dir == top-bottom or $dir == bottom-top {
+    border-top: 1px $type $color;
+    border-bottom: 1px $type $color;
+  } @else if $dir left-right or $dir == right-left {
+    border-left: 1px $type $color;
+    border-right: 1px $type $color;
+  }
+  @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+    border: none;
+    @if $dir == all {
+      border-radius: $borderRadius * 2;
+    }
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      @if $dir == all {
+        border: 1px $type $color;
+        width: 200%;
+        height: 200%;
+        top: 0;
+        left: 0;
+        border-radius: $borderRadius * 2;
+        -webkit-transform: scale(0.5) translate3d(-50%, -50%, 0);
+        transform: scale(0.5) translate3d(-50%, -50%, 0);
+      } @else if $dir == top {
+        border-top: 1px $type $color;
+        width: 200%;
+        height: 0;
+        top: 0;
+        left: 0;
+        -webkit-transform: scale(0.5) translate3d(-50%, -50%, 0);
+        transform: scale(0.5) translate3d(-50%, -50%, 0);
+      } @else if $dir == right {
+        border-right: 1px $type $color;
+        width: 0;
+        height: 200%;
+        top: 0;
+        right: 0;
+        -webkit-transform: scale(0.5) translate3d(50%, -50%, 0);
+        transform: scale(0.5) translate3d(50%, -50%, 0);
+      } @else if $dir == bottom {
+        border-bottom: 1px $type $color;
+        width: 200%;
+        height: 0;
+        bottom: 0;
+        left: 0;
+        -webkit-transform: scale(0.5) translate3d(-50%, 50%, 0);
+        transform: scale(0.5) translate3d(-50%, 50%, 0);
+      } @else if $dir == left {
+        border-left: 1px $type $color;
+        width: 0;
+        height: 200%;
+        top: 0;
+        left: 0;
+        -webkit-transform: scale(0.5) translate3d(-50%, -50%, 0);
+        transform: scale(0.5) translate3d(-50%, -50%, 0);
+      } @else if $dir == top-bottom or $dir == bottom-top {
+        border-top: 1px $type $color;
+        width: 200%;
+        height: 0;
+        top: 0;
+        left: 0;
+        -webkit-transform: scale(0.5) translate3d(-50%, -50%, 0);
+        transform: scale(0.5) translate3d(-50%, -50%, 0);
+      } @else if $dir == left-right or $dir == right-left {
+        border-left: 1px $type $color;
+        width: 0;
+        height: 200%;
+        top: 0;
+        left: 0;
+        -webkit-transform: scale(0.5) translate3d(-50%, -50%, 0);
+        transform: scale(0.5) translate3d(-50%, -50%, 0);
+      }
+    }
+    &:before {
+      content: "";
+      display: block;
+      position: absolute;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      @if $dir == top-bottom or $dir == bottom-top {
+        border-bottom: 1px $type $color;
+        width: 200%;
+        height: 0;
+        bottom: 0;
+        left: 0;
+        -webkit-transform: scale(0.5) translate3d(-50%, -50%, 0);
+        transform: scale(0.5) translate3d(-50%, -50%, 0);
+      } @else if $dir == left-right or $dir == right-left {
+        border-right: 1px $type $color;
+        width: 0;
+        height: 200%;
+        top: 0;
+        right: 0;
+        -webkit-transform: scale(0.5) translate3d(-50%, -50%, 0);
+        transform: scale(0.5) translate3d(-50%, -50%, 0);
+      }
+    }
+  }
+}
+
+@mixin image-type($url, $width, $height) {
+  @media all and (max-resolution: 288dpi) and (-webkit-max-device-pixel-ratio: 3) {
+    background: url($url+"@3x.png") no-repeat center center / cover;
+    display: inline-block;
+    width: $width;
+    height: $height;
+  }
+  @media all and (max-resolution: 192dpi) and (-webkit-max-device-pixel-ratio: 2) {
+    background: url($url+"@2x.png") no-repeat center center / cover;
+    display: inline-block;
+    width: $width;
+    height: $height;
+  }
+  @media all and (max-resolution: 96dpi) and (-webkit-max-device-pixel-ratio: 1) {
+    background: url($url+"@2x.png") no-repeat center center / cover;
+    display: inline-block;
+    width: $width;
+    height: $height;
+  }
+}
