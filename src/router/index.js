@@ -26,7 +26,7 @@ const router = new VueRouter({
   //scrollBehavior就是页面的滚动行为，也就是说，当我们浏览页面的时候，一直往下滑动，然后又点击跳转到另外一个路由组件中去了，
   //这时候我想用户点击返回键返回上一个离开的页面的时候还是展示上一次离开的位置，而不是跑到页面的顶部，一般结合keep-alive使用
   scrollBehavior: (to, from, savedPostion) => {
-    console.log(savedPostion)//{x: 0, y: 1458}, (通过浏览器的 前进/后退 按钮触发) 时才可用。
+    //console.log(savedPostion)//{x: 0, y: 1458}, (通过浏览器的 前进/后退 按钮触发) 时才可用。
     if (savedPostion && to.meta.keepAlive) {//我们想要哪个组件在返回之后回到离开的位置，直接在meta中加一个keepAlive为true就可以了
       return savedPostion
     }

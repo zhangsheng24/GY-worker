@@ -30,7 +30,6 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
     res => {
-        console.log(res)
         if(res.data && res.data.data){
             return res.data.data
         }else{

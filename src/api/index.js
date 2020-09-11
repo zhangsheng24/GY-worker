@@ -12,7 +12,6 @@ export default function(name,params,other={}){
     }else{
         let paths=name.split('.')
         let apiArgs=resource
-        console.log(apiArgs)
         paths.forEach(item=>{
             if(typeof apiArgs==='undefined'){
                 throw Error('无对应接口')

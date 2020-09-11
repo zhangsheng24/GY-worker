@@ -9,5 +9,10 @@
 .home {
   height: 100vh;
   width: 100vw;
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    color: transparent;
+  }
 }
 </style>

@@ -5,6 +5,7 @@ const User=()=>import(/* webpackChunkName: "User" */ '@/views/User.vue')
 //偏好
 const Preference=()=>import(/* webpackChunkName: "Preference" */ '@/views/preference/index')
 const PreferencePage1=()=>import(/* webpackChunkName: "Preference" */ '@/views/preference/page1')
+const PreferencePage2=()=>import(/* webpackChunkName: "Preference" */ '@/views/preference/page2')
 
 const routes=[
     {   redirect:'/home',
@@ -57,6 +58,15 @@ const routes=[
         meta:{
             title:'选择服务内容',
             navIndex:3
+        }
+    },
+    {
+        path:'/preference/page2',
+        component:PreferencePage2,
+        name:'PreferencePage2',
+        meta:{
+            title:'请选择常住地址',
+            navIndex:4
         }
     }
 ]

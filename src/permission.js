@@ -1,8 +1,7 @@
 import router from './router'//要使用同一个路由实例对象
-// import cfg from '@/config'
+import cfg from '@/config'
 import api from './api'
-import cfg from './config'
-import { LgetItem,LsetItem,LreItem } from './utils/storage'
+import { LgetItem,LsetItem } from './utils/storage'
 
 //这里搞了一个路由的拦截处理
 router.beforeEach((to, from, next) => {
@@ -26,14 +25,13 @@ router.beforeEach((to, from, next) => {
         if (site || to.path.indexOf('/preference') !== -1) {
             next()
         } else {//如果site为false，且去的路由地址不包含'/preference'，就跳到page1
-        console.log('跳转到page1')
-            // next({
-            //     path: '/preference/page1',
-            //     query: {
-            //         site: false
-            //     },
-            //     replace: true
-            // })
+            next({
+                path: '/preference/page1',
+                query: {
+                    site: false
+                },
+                replace: true
+            })
         }
     } else {
         if (to.query.code) {
@@ -42,24 +40,19 @@ router.beforeEach((to, from, next) => {
                 type: 1
             }).then(res => {
                 //site:是否选择偏好，如果为false。就跳到选择偏好的页面
-                const oauth2Query=LgetItem('oauth2Query')
-                console.log(oauth2Query)
+                // const oauth2Query=LgetItem('oauth2Query')
                 // LreItem('oauth2Query')
                 LsetItem('jwtToken', res.jwtToken)
                 LsetItem('site', res.site)
-                console.log(from)
-                console.log(to)
-                // next({
-                //     path:to.query.state?decodeURIComponent(to.query.state):'/home',
-                //     query:oauth2Query,
-                //     replace:true
-                // })
+                next({//to.query.state在根地址的情况下访问，重定向到home，所以state就是'/home'
+                    path:to.query.state?decodeURIComponent(to.query.state):'/home',
+                    // query:oauth2Query,
+                    replace:true
+                })
             })
         }else{
             const path=encodeURIComponent(to.path)//对路由进行编码
-            console.log(path)
-            console.log(to)
-            LsetItem('oauth2Query',to.query)
+            // LsetItem('oauth2Query',to.query)
             window.location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxecb7461cb5093dca&redirect_uri=${cfg.redirect}&response_type=code&scope=snsapi_userinfo&state=${path}#wechat_redirect`)
         }
     }
@@ -73,12 +66,8 @@ http://localhost:8080/dev/worker/ ==>http://localhost:8080/dev/worker/home
 https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxecb7461cb5093dca&redirect_uri=${cfg.redirect}&response_type=code&scope=snsapi_userinfo&state=${path}#wechat_redirect
 点击授权同意,微信授权这个网站重定向到我们指定的地址。又再一次打开我们的项目，此时地址栏会带上code和state参数
 http://hswglist.jiaoyf.com/dev/worker/ ==>http://hswglist.jiaoyf.com/dev/worker/home/?code=031NLnll2FR2B54RnJol2lE38F3NLnlm&state=%2Fhome
-http://hswglist.jiaoyf.com/dev/worker/home/?code=031NLnll2FR2B54RnJol2lE38F3NLnlm&state=%2Fhome ==>
-http://hswglist.jiaoyf.com/dev/worker/home
-
-
-
-
+http://hswglist.jiaoyf.com/dev/worker/home/?code=031NLnll2FR2B54RnJol2lE38F3NLnlm&state=%2Fhome ==>http://hswglist.jiaoyf.com/dev/worker/home
+跳转到home之前又被拦截，然后就看偏好是否设置，或者地址是否为preference。详细的看上面的说明
 
 */
 
